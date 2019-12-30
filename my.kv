@@ -1,0 +1,90 @@
+#:import Factory kivy.factory.Factory
+#filename: "my.kv"
+<SuccessPage>:
+	Label:
+		text: "THE RESULTS"
+		size_hint: 0.6, 0.2
+		pos_hint: {"x": 0.2, "top": 1}
+
+	Button:
+		text: "Close the popup"
+		size_hint: 1, 0.4
+		pos_hint: {"x": 0, "y": 0.1}
+		on_release: app.closePopUpSuccess()
+
+<ErrorPage>:
+	Label:
+		text: "\nYou put some worng/empty inputs!\n Please check them and click again\n(Have to insert positive digit number for result number)"
+		size_hint: 0.6, 0.2
+		pos_hint: {"x": 0.2, "top": 1}
+
+	Button:
+		text: "Ok, I get it!"
+		size_hint: 1, 0.4
+		pos_hint: {"x": 0, "y": 0.1}
+		on_release: app.closePopUpERR()
+
+<MyGrid>:
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'backgroundPic.jpg'
+	GridLayout:
+		rows: 3
+		
+		Label:
+			text: "Recommended Bike Trailes in NYC"
+			font_size: 40
+			bold: True
+	
+
+		GridLayout:
+			cols: 2
+			rows: 3
+			padding: 0,0,0,60
+			
+			Label:
+				text: "What's your current location?"
+			
+			GridLayout:
+				cols: 1
+				padding: 0,0,5,5
+				TextInput: 
+					id: location_input
+					hint_text:'Enter text (requierd)'
+					multiline: False
+
+			
+			Label:
+				text: "How Much time do you have?"
+			
+			GridLayout:
+				cols: 1
+				padding: 0,0,5,5
+				TextInput: 
+					id: time_input
+					hint_text:'Enter positive number in minutes only (requierd)'
+					multiline: False
+
+				
+			Label:
+				text: "How much results you want to receive?"
+			
+			GridLayout:
+				cols: 1
+				padding: 0,0,5,5
+				TextInput: 
+					id: count_res_input
+					hint_text: 'Enter positive number only (requierd)'
+					multiline: False
+
+		
+		GridLayout:
+			cols: 1
+			padding: 80,80,80,80
+
+			Button:
+				text: "Let's Go!"
+				on_release: app.openPopUpSubmit()
+
