@@ -11,29 +11,18 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
 
-class MyGrid(FloatLayout):
-    def openPopUp(self):
-        show_res_popup()
+class MyGrid(FloatLayout): pass
 
-class Popups(FloatLayout):
-    pass
+class SuccessPage(FloatLayout): pass
 
-class ErrorPage(FloatLayout):
-    pass
-
-def show_res_popup():
-    show = Popups()
-    popupWindow = Popup(title="Popup Window", content=show,
-                        size_hint=(None, None), size=(200, 200))
-    popupWindow.open()
+class ErrorPage(FloatLayout): pass
 
 class MyApp(App):
     def build(self):
-        self.UI = MyGrid()
-        return self.UI
+        return MyGrid()
 
     def openPopUpSubmit(self):
-        if(self.root.ids.count_res_input.text.isdigit() and len(self.root.ids.time_input.text) > 0 and len(self.root.ids.location_input.text) > 0):
+        if(self.root.ids.count_res_input.text.isdigit() and self.root.ids.time_input.text.isdigit() and  len(self.root.ids.location_input.text) > 0):
             self.loc = self.root.ids.location_input.text
             self.duration = self.root.ids.time_input.text
             self.resCount = self.root.ids.count_res_input.text
@@ -41,15 +30,20 @@ class MyApp(App):
             self.root.ids.location_input.text = ''
             self.root.ids.time_input.text = ''
             self.root.ids.count_res_input.text = ''
-            self.UI.openPopUp()
+            self.popupWindowSuccess = Popup(title="Results Window", content=SuccessPage(),
+                                size_hint=(None, None), size=(200, 200))
+            self.popupWindowSuccess.open()
         else:
-            show = ErrorPage()
-            self.popupWindowERR = Popup(title="OOPS!", content=show,
+            self.popupWindowERR = Popup(title="OOPS!", content=ErrorPage(),
                                 size_hint=(None, None), size=(400, 260))
             self.popupWindowERR.open()
 
-    def closePopUp(self):
+    def closePopUpERR(self):
         self.popupWindowERR.dismiss()
+
+    def closePopUpSuccess(self):
+        self.popupWindowSuccess.dismiss()
+
 
 if __name__ == "__main__":
     MyApp().run()
