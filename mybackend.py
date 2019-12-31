@@ -31,9 +31,12 @@ class Database:
             self.conn.commit()
 
     def calculate_recommendations(self, start_station_name, duration_time, recommendations_amount):
+        print(start_station_name)
+        print(duration_time)
+        print(recommendations_amount)
         df = self.execute_query(start_station_name)
         df = self.scoring_trips(duration_time, recommendations_amount, df)
-        print (df)
+        return df
 
 
     def execute_query(self, start_station_name):

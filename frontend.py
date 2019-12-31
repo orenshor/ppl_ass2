@@ -10,6 +10,7 @@ from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
+import mybackend
 
 class MyGrid(FloatLayout): pass
 
@@ -33,6 +34,11 @@ class MyApp(App):
             self.popupWindowSuccess = Popup(title="Results Window", content=SuccessPage(),
                                 size_hint=(None, None), size=(200, 200))
             self.popupWindowSuccess.open()
+            ## calculate the answer - return in DataFrame
+            db = mybackend.Database()
+            self.answers = db.calculate_recommendations(self.loc,self.duration,self.resCount)
+
+
         else:
             self.popupWindowERR = Popup(title="OOPS!", content=ErrorPage(),
                                 size_hint=(None, None), size=(400, 260))
