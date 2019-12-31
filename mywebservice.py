@@ -22,7 +22,7 @@ def calculate_recommendations():
         return jsonify('Error %s' % (e.args[0]))
 
 
-
+#validate function
 def validate(start_station_name, duration_time, recommendations_amount):
     try:
         int(duration_time)

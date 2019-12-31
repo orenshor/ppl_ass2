@@ -16,14 +16,13 @@ import mybackend
 
 class MyGrid(FloatLayout): pass
 
-class SuccessPage(FloatLayout): pass
-
 class ErrorPage(FloatLayout): pass
 
 class MyApp(App):
+
     def build(self):
         return MyGrid()
-
+    ## function that actiave when click on Let's Go button. make all the inputs checks and activate the backend
     def openPopUpSubmit(self):
         if(self.root.ids.count_res_input.text.isdigit() and self.root.ids.time_input.text.isdigit() and  len(self.root.ids.location_input.text) > 0):
             self.loc = self.root.ids.location_input.text
@@ -33,13 +32,12 @@ class MyApp(App):
             self.root.ids.location_input.text = ''
             self.root.ids.time_input.text = ''
             self.root.ids.count_res_input.text = ''
-            self.popupWindowSuccess = Popup(title="Results Window", content=SuccessPage(),
-                                size_hint=(None, None), size=(200, 200))
-            self.popupWindowSuccess.open()
-            ## calculate the answer - return in DataFrame
-            db = mybackend.Database()
             try:
-                self.answers = db.calculate_recommendations(self.loc,int(self.duration), int(self.resCount))
+                #BackEnd:calculate the answer
+                db = mybackend.Database()
+                answers =db.calculate_recommendations(self.loc,int(self.duration), int(self.resCount))
+                self.popupWindowSuccess = Popup(title="Results Window", content=Label(text=str('\n'.join(answers)), halign='center'),
+                                                size_hint=(None, None), size=(400, 300)).open()
             except Exception as e:
                 ctypes.windll.user32.MessageBoxW(0, e.args[0], u"Error",  0)
 
@@ -49,11 +47,9 @@ class MyApp(App):
                                 size_hint=(None, None), size=(400, 260))
             self.popupWindowERR.open()
 
+    # function that close the Error popUp
     def closePopUpERR(self):
         self.popupWindowERR.dismiss()
-
-    def closePopUpSuccess(self):
-        self.popupWindowSuccess.dismiss()
 
 
 if __name__ == "__main__":

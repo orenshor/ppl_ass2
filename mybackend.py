@@ -10,7 +10,7 @@ class Database:
         self.cursor = self.conn.cursor()
         self.init_table()
 
-
+# function that create the Table BikeShare and insert the DATA from CSV file
     def init_table(self):
         self.conn.execute(
             "CREATE TABLE IF NOT EXISTS bikeShare (TripDuration INTEGER ,StartTime DATETIME, "
@@ -29,7 +29,7 @@ class Database:
             for data in reader:
                 self.cursor.execute(query, data)
             self.conn.commit()
-
+# function that execute the query on the Database. gets startStation,durationTime and recomendationAmmount as params
     def calculate_recommendations(self, start_station_name, duration_time, recommendations_amount):
         df = self.execute_query(start_station_name)
         if len(df) == 0:
@@ -38,7 +38,7 @@ class Database:
             df = self.scoring_trips(duration_time, recommendations_amount, df)
         return df
 
-
+# execute the search query on the DB.
     def execute_query(self, start_station_name):
         query = "SELECT * FROM bikeShare WHERE StartStationName = '" + start_station_name + "'"
         results = self.cursor.execute(query)
@@ -46,6 +46,7 @@ class Database:
         df = pd.DataFrame.from_records(data=results.fetchall(), columns=cols)
         return df
 
+# function that make the score for the result
     def scoring_trips(self, duration_time, recommendations_amount, df):
         df2 = df.groupby(['StartStationName', 'EndStationName']).agg({"TripDurationinmin": np.median})
         df2['score'] = np.abs(df2['TripDurationinmin'] - duration_time)
@@ -54,9 +55,3 @@ class Database:
         return df2.index.get_level_values('EndStationName').tolist()
 
 
-# + start_station_name + "' AND (TripDurationinmin >= "\
-#                 + str(duration_time - duration_time_percent) \
-#                 + " AND TripDurationinmin <= " + str(duration_time + duration_time_percent) +")"
-if __name__ == "__main__":
-    db = Database()
-    db.calculate_recommendations('Oakland Ave', 5, 5)

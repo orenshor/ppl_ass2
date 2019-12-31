@@ -1,16 +1,5 @@
 #:import Factory kivy.factory.Factory
 #filename: "my.kv"
-<SuccessPage>:
-	Label:
-		text: "THE RESULTS"
-		size_hint: 0.6, 0.2
-		pos_hint: {"x": 0.2, "top": 1}
-
-	Button:
-		text: "Close the popup"
-		size_hint: 1, 0.4
-		pos_hint: {"x": 0, "y": 0.1}
-		on_release: app.closePopUpSuccess()
 
 <ErrorPage>:
 	Label:
