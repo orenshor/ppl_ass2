@@ -16,7 +16,7 @@ def calculate_recommendations():
     try:
         validate(start_station_name, duration_time, recommendations_amount)
         db = mybackend.Database()
-        answers = db.calculate_recommendations(start_station_name, int(duration_time), int(recommendations_amount)).to_json()
+        answers = db.calculate_recommendations(start_station_name, int(duration_time), int(recommendations_amount))
         return jsonify(answers)
     except Exception as e:
         return jsonify('Error %s' % (e.args[0]))

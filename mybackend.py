@@ -51,8 +51,7 @@ class Database:
         df2['score'] = np.abs(df2['TripDurationinmin'] - duration_time)
         df2.sort_values(by=['score'], ascending=True, inplace=True)
         df2 = df2.head(recommendations_amount)
-        my_list = df2["EndStationName"].tolist()
-        return my_list
+        return df2.index.get_level_values('EndStationName').tolist()
 
 
 # + start_station_name + "' AND (TripDurationinmin >= "\
