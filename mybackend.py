@@ -31,11 +31,11 @@ class Database:
             self.conn.commit()
 
     def calculate_recommendations(self, start_station_name, duration_time, recommendations_amount):
-        print(start_station_name)
-        print(duration_time)
-        print(recommendations_amount)
         df = self.execute_query(start_station_name)
-        df = self.scoring_trips(duration_time, recommendations_amount, df)
+        if len(df) == 0:
+            raise ValueError("There are No Trip From This Location")
+        else:
+            df = self.scoring_trips(duration_time, recommendations_amount, df)
         return df
 
 
@@ -51,7 +51,8 @@ class Database:
         df2['score'] = np.abs(df2['TripDurationinmin'] - duration_time)
         df2.sort_values(by=['score'], ascending=True, inplace=True)
         df2 = df2.head(recommendations_amount)
-        return df2
+        my_list = df2["EndStationName"].tolist()
+        return my_list
 
 
 # + start_station_name + "' AND (TripDurationinmin >= "\

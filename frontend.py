@@ -1,3 +1,5 @@
+import ctypes
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.gridlayout import GridLayout
@@ -36,7 +38,10 @@ class MyApp(App):
             self.popupWindowSuccess.open()
             ## calculate the answer - return in DataFrame
             db = mybackend.Database()
-            self.answers = db.calculate_recommendations(self.loc,self.duration,self.resCount)
+            try:
+                self.answers = db.calculate_recommendations(self.loc,int(self.duration), int(self.resCount))
+            except Exception as e:
+                ctypes.windll.user32.MessageBoxW(0, e.args[0], u"Error",  0)
 
 
         else:
